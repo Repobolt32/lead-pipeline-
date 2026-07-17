@@ -13,8 +13,42 @@ export function removeByKeywords(
   const removed: Record<string, unknown>[] = []
 
   for (const lead of leads) {
-    const nameField = (lead.title ?? lead.name ?? '') as string
-    const matched = lowerKeywords.some(kw => nameField.toLowerCase().includes(kw))
+    let matched = false
+
+    for (const value of Object.values(lead)) {
+      if (typeof value === 'string') {
+        const lowerVal = value.toLowerCase()
+        if (lowerKeywords.some(kw => lowerVal.includes(kw))) {
+          matched = true
+          break
+        }
+      } else if (Array.isArray(value)) {
+        const hasMatch = value.some(item => {
+          if (typeof item === 'string') {
+            const lowerItem = item.toLowerCase()
+            return lowerKeywords.some(kw => lowerItem.includes(kw))
+          }
+          return false
+        })
+        if (hasMatch) {
+          matched = true
+          break
+        }
+      } else if (value && typeof value === 'object') {
+        const hasMatch = Object.values(value).some(subVal => {
+          if (typeof subVal === 'string') {
+            const lowerSub = subVal.toLowerCase()
+            return lowerKeywords.some(kw => lowerSub.includes(kw))
+          }
+          return false
+        })
+        if (hasMatch) {
+          matched = true
+          break
+        }
+      }
+    }
+
     if (matched) {
       removed.push(lead)
     } else {

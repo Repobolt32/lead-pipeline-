@@ -12,9 +12,7 @@ const PAGE_SIZE = 50
 export default function ScrapePage() {
   const [city, setCity] = useState('')
   const [rawLeads, setRawLeads] = useState<Record<string, unknown>[]>([])
-  const [displayLeads, setDisplayLeads] = useState<Record<string, unknown>[]>([])
   const [keywords, setKeywords] = useState<string[]>([])
-  const [removedCount, setRemovedCount] = useState(0)
   const [page, setPage] = useState(1)
   const [importing, setImporting] = useState(false)
   const [showRaw, setShowRaw] = useState(false)
@@ -23,15 +21,27 @@ export default function ScrapePage() {
   const [fileName, setFileName] = useState('')
   const fileRef = useRef<HTMLInputElement>(null)
 
+  const [prevKeywords, setPrevKeywords] = useState<string[]>(keywords)
+  const [prevRawLeads, setPrevRawLeads] = useState<Record<string, unknown>[]>(rawLeads)
+
+  if (keywords !== prevKeywords || rawLeads !== prevRawLeads) {
+    setPrevKeywords(keywords)
+    setPrevRawLeads(rawLeads)
+    setPage(1)
+  }
+
+  const { kept: displayLeads, removed: removedLeads } = removeByKeywords(rawLeads, keywords)
+  const removedCount = removedLeads.length
+
   const columns = rawLeads.length > 0 ? Object.keys(rawLeads[0]) : []
   const totalPages = Math.max(1, Math.ceil(displayLeads.length / PAGE_SIZE))
-  const pageLeads = displayLeads.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
+  const currentPage = Math.min(page, totalPages)
+  const pageLeads = displayLeads.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE)
 
   function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
     setError('')
     setSuccess('')
     setKeywords([])
-    setRemovedCount(0)
     setPage(1)
 
     const file = e.target.files?.[0]
@@ -47,7 +57,6 @@ export default function ScrapePage() {
           return
         }
         setRawLeads(parsed)
-        setDisplayLeads(parsed)
       } catch {
         setError('Invalid JSON file')
       }
@@ -55,16 +64,6 @@ export default function ScrapePage() {
     reader.readAsText(file)
   }
 
-  function handleClean() {
-    setError('')
-    setSuccess('')
-    if (keywords.length === 0) return
-
-    const { kept, removed } = removeByKeywords(rawLeads, keywords)
-    setDisplayLeads(kept)
-    setRemovedCount(removed.length)
-    setPage(1)
-  }
 
   async function handleImport() {
     setError('')
@@ -111,11 +110,9 @@ export default function ScrapePage() {
           setSuccess(parts.join('. ') + '.')
           // Reset view
           setRawLeads([])
-          setDisplayLeads([])
           setFileName('')
           setCity('')
           setKeywords([])
-          setRemovedCount(0)
         }
       }
     } catch (err) {
@@ -174,21 +171,13 @@ export default function ScrapePage() {
         {rawLeads.length > 0 && (
           <div className={styles.keywordSection}>
             <div className={styles.keywordInput}>
-              <label className={styles.label}>Filter out trash keywords (matches name case-insensitively)</label>
+              <label className={styles.label}>Filter out trash keywords (matches any field case-insensitively)</label>
               <ChipInput
                 keywords={keywords}
                 onChange={setKeywords}
                 placeholder="Type trash keyword and press Enter..."
               />
             </div>
-            <button
-              className={styles.cleanBtn}
-              onClick={handleClean}
-              disabled={keywords.length === 0}
-              style={{ marginTop: '22px' }}
-            >
-              Clean
-            </button>
           </div>
         )}
       </div>
@@ -316,7 +305,7 @@ export default function ScrapePage() {
 
             {totalPages > 1 && (
               <Pagination
-                page={page}
+                page={currentPage}
                 totalPages={totalPages}
                 onPrev={() => setPage((p) => p - 1)}
                 onNext={() => setPage((p) => p + 1)}
@@ -335,10 +324,8 @@ export default function ScrapePage() {
                 className={styles.btnSecondary}
                 onClick={() => {
                   setRawLeads([])
-                  setDisplayLeads([])
                   setFileName('')
                   setKeywords([])
-                  setRemovedCount(0)
                   setError('')
                   setSuccess('')
                 }}
