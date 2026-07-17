@@ -21,6 +21,7 @@ interface Lead {
   call_status: CallStatus
   sale_status: SaleStatus
   notes: string
+  website?: string
 }
 
 const SALE_PILL_COLORS: Record<SaleStatus, { bg: string; color: string }> = {

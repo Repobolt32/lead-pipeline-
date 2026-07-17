@@ -6,6 +6,7 @@ import styles from './Sidebar.module.css'
 
 const navItems = [
   { href: '/import', label: 'Import Leads', icon: '⬆' },
+  { href: '/scrape', label: 'Scrape & Clean', icon: '🧹' },
   { href: '/outreach', label: 'Outreach', icon: '📞' },
 ]
 

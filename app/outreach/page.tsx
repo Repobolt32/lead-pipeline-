@@ -18,6 +18,7 @@ interface Lead {
   call_status: CallStatus
   sale_status: SaleStatus
   notes: string
+  website: string
 }
 
 const MOCK_LEADS: Lead[] = [
@@ -29,7 +30,8 @@ const MOCK_LEADS: Lead[] = [
     google_maps_url: 'https://maps.google.com/?cid=111',
     call_status: 'pending',
     sale_status: 'pending',
-    notes: 'Freshly imported lead, not yet called.'
+    notes: 'Freshly imported lead, not yet called.',
+    website: 'https://pizzapalace.example.com'
   },
   {
     id: '2',
@@ -39,7 +41,8 @@ const MOCK_LEADS: Lead[] = [
     google_maps_url: 'https://maps.google.com/?cid=222',
     call_status: 'called',
     sale_status: 'free_trial',
-    notes: 'Had a call, agreed to start a 14-day free trial.'
+    notes: 'Had a call, agreed to start a 14-day free trial.',
+    website: ''
   },
   {
     id: '3',
@@ -49,7 +52,8 @@ const MOCK_LEADS: Lead[] = [
     google_maps_url: 'https://maps.google.com/?cid=333',
     call_status: 'call_later',
     sale_status: 'proceed',
-    notes: 'Busy right now, asked to call back next Tuesday.'
+    notes: 'Busy right now, asked to call back next Tuesday.',
+    website: 'https://sushispot.example.com'
   },
   {
     id: '4',
@@ -59,7 +63,8 @@ const MOCK_LEADS: Lead[] = [
     google_maps_url: 'https://maps.google.com/?cid=444',
     call_status: 'no_answer',
     sale_status: 'rejected',
-    notes: 'No response after 3 call attempts. Marking as dead lead.'
+    notes: 'No response after 3 call attempts. Marking as dead lead.',
+    website: ''
   },
   {
     id: '5',
@@ -69,19 +74,21 @@ const MOCK_LEADS: Lead[] = [
     google_maps_url: 'https://maps.google.com/?cid=555',
     call_status: 'called',
     sale_status: 'proceed',
-    notes: 'Highly interested! Proceeding to setup implementation.'
+    notes: 'Highly interested! Proceeding to setup implementation.',
+    website: 'https://pastaplace.example.com'
   }
 ]
 
 export default function OutreachPage() {
   const [cities, setCities] = useState<string[]>([])
   const [selectedCity, setSelectedCity] = useState<string>('')
-  const [leads, setLeads] = useState<Lead[]>([])
+  const [allLeads, setAllLeads] = useState<Lead[]>([])
   const [totalCount, setTotalCount] = useState(0)
   const [page, setPage] = useState(1)
   const [loading, setLoading] = useState(false)
 
   const totalPages = Math.max(1, Math.ceil(totalCount / PAGE_SIZE))
+  const pageLeads = allLeads.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
 
   // Load distinct cities once on mount
   useEffect(() => {
@@ -106,7 +113,7 @@ export default function OutreachPage() {
     loadCities()
   }, [])
 
-  // Load leads for selected city + page
+  // Load leads for selected city and sort by website presence
   useEffect(() => {
     if (!selectedCity) return
 
@@ -118,38 +125,53 @@ export default function OutreachPage() {
       } else {
         localStorage.setItem('mock_leads', JSON.stringify(MOCK_LEADS))
       }
+      
+      // Sort: websites first
+      const sorted = [...list].sort((a, b) => {
+        const hasA = !!(a.website && a.website !== '—')
+        const hasB = !!(b.website && b.website !== '—')
+        if (hasA && !hasB) return -1
+        if (!hasA && hasB) return 1
+        return 0
+      })
+
       Promise.resolve().then(() => {
-        setLeads(list)
-        setTotalCount(list.length)
+        setAllLeads(sorted)
+        setTotalCount(sorted.length)
       })
       return
     }
 
-
     let cancelled = false
-
-    const from = (page - 1) * PAGE_SIZE
-    const to = from + PAGE_SIZE - 1
 
     const query = supabase
       .from('leads')
-      .select('id,name,phone,whatsapp_number,google_maps_url,call_status,sale_status,notes', { count: 'exact' })
+      .select('id,name,phone,whatsapp_number,google_maps_url,call_status,sale_status,notes,website')
       .eq('city', selectedCity)
       .order('created_at', { ascending: true })
-      .range(from, to)
 
     Promise.resolve(true)
       .then(() => { if (!cancelled) setLoading(true); return query })
-      .then(({ data, count }) => {
+      .then(({ data }) => {
         if (cancelled) return
-        setLeads((data as Lead[]) || [])
-        setTotalCount(count || 0)
+        const list = (data as Lead[]) || []
+        
+        // Sort: websites first
+        const sorted = [...list].sort((a, b) => {
+          const hasA = !!(a.website && a.website !== '—')
+          const hasB = !!(b.website && b.website !== '—')
+          if (hasA && !hasB) return -1
+          if (!hasA && hasB) return 1
+          return 0
+        })
+
+        setAllLeads(sorted)
+        setTotalCount(sorted.length)
         setLoading(false)
       })
 
     return () => { cancelled = true }
-  }, [selectedCity, page])
-
+  }, [selectedCity])
 
   // Reset to page 1 when city changes
   function handleCityChange(e: React.ChangeEvent<HTMLSelectElement>) {
@@ -198,7 +220,7 @@ export default function OutreachPage() {
                 <tr>
                   <td colSpan={7} className={styles.loadingState}>Loading leads...</td>
                 </tr>
-              ) : leads.length === 0 ? (
+              ) : allLeads.length === 0 ? (
                 <tr>
                   <td colSpan={7} className={styles.emptyState}>
                     No leads found for {selectedCity || 'this city'}.<br />
@@ -206,7 +228,7 @@ export default function OutreachPage() {
                   </td>
                 </tr>
               ) : (
-                leads.map((lead) => (
+                pageLeads.map((lead) => (
                   <LeadRow key={lead.id} lead={lead} />
                 ))
               )}
