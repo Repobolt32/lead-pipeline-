@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { supabase } from '@/lib/supabase'
+import { supabase, isPlaceholder } from '@/lib/supabase'
 import {
   CALL_STATUS_COLORS,
   CALL_STATUS_OPTIONS,
@@ -44,8 +44,18 @@ export default function LeadRow({ lead: initialLead }: LeadRowProps) {
   }
 
   async function updateDB(patch: Partial<Lead>) {
+    if (isPlaceholder) {
+      const stored = localStorage.getItem('mock_leads')
+      if (stored) {
+        const list = JSON.parse(stored) as Lead[]
+        const updated = list.map(item => item.id === lead.id ? { ...item, ...patch } : item)
+        localStorage.setItem('mock_leads', JSON.stringify(updated))
+      }
+      return
+    }
     await supabase.from('leads').update(patch).eq('id', lead.id)
   }
+
 
   function handleCallStatus(e: React.ChangeEvent<HTMLSelectElement>) {
     const val = e.target.value as CallStatus
