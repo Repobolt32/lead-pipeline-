@@ -5,6 +5,7 @@ import { supabase } from '@/lib/supabase'
 import {
   CALL_STATUS_COLORS,
   CALL_STATUS_OPTIONS,
+  CALL_STATUS_BADGE,
   WHATSAPP_MESSAGE,
   CallStatus,
   SaleStatus,
@@ -115,6 +116,12 @@ export default function LeadRow({ lead: initialLead }: LeadRowProps) {
           value={lead.call_status}
           onChange={handleCallStatus}
           id={`call-status-${lead.id}`}
+          style={{
+            background: CALL_STATUS_BADGE[lead.call_status]?.bg ?? '#F3F4F6',
+            color: CALL_STATUS_BADGE[lead.call_status]?.color ?? '#374151',
+            fontWeight: 600,
+            borderColor: 'transparent',
+          }}
         >
           {CALL_STATUS_OPTIONS.map((s) => (
             <option key={s} value={s}>
