@@ -1,0 +1,148 @@
+.row {
+  transition: background 0.2s;
+}
+
+.td {
+  padding: 10px 12px;
+  border: 1px solid #111;
+  vertical-align: middle;
+  font-size: 13px;
+}
+
+.name {
+  font-weight: 500;
+  color: #111827;
+  min-width: 160px;
+  max-width: 200px;
+}
+
+.phone {
+  white-space: nowrap;
+}
+
+.phoneLink {
+  color: #111827;
+  font-weight: 500;
+  text-decoration: none;
+  padding: 4px 8px;
+  border: 1px solid #D1D5DB;
+  border-radius: 6px;
+  font-size: 12px;
+  transition: background 0.15s;
+  display: inline-block;
+}
+
+.phoneLink:hover {
+  background: #F3F4F6;
+}
+
+.mapsBtn {
+  padding: 4px 12px;
+  border: 1px solid #D1D5DB;
+  border-radius: 6px;
+  background: #FFFFFF;
+  font-size: 12px;
+  font-weight: 500;
+  color: #374151;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.mapsBtn:hover {
+  background: #F3F4F6;
+  border-color: #111827;
+}
+
+.statusSelect {
+  padding: 5px 8px;
+  border: 1px solid #D1D5DB;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #111827;
+  background: transparent;
+  cursor: pointer;
+  outline: none;
+}
+
+.statusSelect:focus {
+  border-color: #111827;
+}
+
+.salePill {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: capitalize;
+  cursor: pointer;
+  border: none;
+  transition: opacity 0.15s;
+}
+
+.salePill:hover {
+  opacity: 0.8;
+}
+
+.whatsappCell {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  min-width: 200px;
+}
+
+.waInput {
+  width: 110px;
+  padding: 4px 8px;
+  border: 1px solid #D1D5DB;
+  border-radius: 6px;
+  font-size: 12px;
+  outline: none;
+}
+
+.waInput:focus {
+  border-color: #111827;
+}
+
+.waBtn {
+  padding: 4px 10px;
+  background: #25D366;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s;
+}
+
+.waBtn:hover {
+  background: #1ebe5d;
+}
+
+.notesInput {
+  width: 100%;
+  min-width: 150px;
+  padding: 4px 8px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  font-size: 12px;
+  color: #6B7280;
+  background: transparent;
+  outline: none;
+  resize: none;
+  font-family: 'Inter', sans-serif;
+  transition: border-color 0.15s;
+}
+
+.notesInput:focus {
+  border-color: #D1D5DB;
+  color: #111827;
+  background: #F9FAFB;
+}
+
+.notesInput::placeholder {
+  color: #D1D5DB;
+}

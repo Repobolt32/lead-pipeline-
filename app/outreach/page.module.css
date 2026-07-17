@@ -1,0 +1,97 @@
+.container {
+  max-width: 1400px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.citySelect {
+  padding: 8px 14px;
+  border: 1px solid #D1D5DB;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #111827;
+  background: #FFFFFF;
+  cursor: pointer;
+  outline: none;
+  min-width: 160px;
+}
+
+.citySelect:focus {
+  border-color: #111827;
+}
+
+.countBadge {
+  font-size: 13px;
+  color: #6B7280;
+  background: #F3F4F6;
+  padding: 5px 12px;
+  border-radius: 999px;
+  border: 1px solid #E5E7EB;
+}
+
+.tableCard {
+  background: #FFFFFF;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+
+.tableWrap {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.table thead tr {
+  background: #F9FAFB;
+}
+
+.table th {
+  padding: 12px 12px;
+  text-align: left;
+  font-weight: 600;
+  color: #374151;
+  border: 1px solid #111;
+  white-space: nowrap;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 60px 20px;
+  color: #9CA3AF;
+  font-size: 14px;
+}
+
+.loadingState {
+  text-align: center;
+  padding: 40px;
+  color: #6B7280;
+  font-size: 14px;
+}
