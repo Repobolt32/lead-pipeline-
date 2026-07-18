@@ -1,9 +1,9 @@
 // Update VIDEO_LINK with your Loom URL before going live
 export const VIDEO_LINK = 'https://www.youtube.com/watch?v=gxqY6Hh4vTo'
 
-export const WHATSAPP_MESSAGE = `Hi! I'm reaching out about a software tool built specifically for restaurants like yours.
+export const WHATSAPP_MESSAGE = `Hi! This is the demo video for Restoloop: your restaurant growth partner.
 
-I'd love to show you a quick demo — here's a short video walking you through it: ${VIDEO_LINK}
+${VIDEO_LINK}
 
 Would love to know your thoughts!`
 
