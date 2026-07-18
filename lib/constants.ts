@@ -1,5 +1,5 @@
 // Update VIDEO_LINK with your Loom URL before going live
-export const VIDEO_LINK = 'https://loom.com/share/YOUR_LOOM_ID_HERE'
+export const VIDEO_LINK = 'https://www.youtube.com/watch?v=gxqY6Hh4vTo'
 
 export const WHATSAPP_MESSAGE = `Hi! I'm reaching out about a software tool built specifically for restaurants like yours.
 
