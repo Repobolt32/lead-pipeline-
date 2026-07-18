@@ -95,10 +95,10 @@ export default function LeadRow({ lead: initialLead }: LeadRowProps) {
   return (
     <tr className={styles.row} style={{ background: rowBg }}>
       {/* Name */}
-      <td className={`${styles.td} ${styles.name}`} title={lead.name}>{lead.name}</td>
+      <td className={`${styles.td} ${styles.name}`} data-label="Name" title={lead.name}>{lead.name}</td>
 
       {/* Phone */}
-      <td className={`${styles.td} ${styles.phone}`}>
+      <td className={`${styles.td} ${styles.phone}`} data-label="Phone">
         <a
           className={styles.phoneLink}
           href={`tel:${lead.phone}`}
@@ -109,7 +109,7 @@ export default function LeadRow({ lead: initialLead }: LeadRowProps) {
       </td>
 
       {/* Maps */}
-      <td className={styles.td}>
+      <td className={styles.td} data-label="Maps">
         <button
           className={styles.mapsBtn}
           id={`maps-${lead.id}`}
@@ -121,7 +121,7 @@ export default function LeadRow({ lead: initialLead }: LeadRowProps) {
       </td>
 
       {/* Call Status */}
-      <td className={styles.td}>
+      <td className={styles.td} data-label="Call">
         <select
           className={styles.statusSelect}
           value={lead.call_status}
@@ -143,7 +143,7 @@ export default function LeadRow({ lead: initialLead }: LeadRowProps) {
       </td>
 
       {/* WhatsApp */}
-      <td className={styles.td}>
+      <td className={styles.td} data-label="WhatsApp">
         <div className={styles.whatsappCell}>
           <input
             className={styles.waInput}
@@ -156,14 +156,19 @@ export default function LeadRow({ lead: initialLead }: LeadRowProps) {
             className={styles.waBtn}
             onClick={handleWhatsApp}
             id={`wa-btn-${lead.id}`}
+            title="Open WhatsApp chat"
           >
-            WA
+            <img
+              src="/whatsapp-icon.png"
+              alt="WhatsApp"
+              className={styles.waIcon}
+            />
           </button>
         </div>
       </td>
 
       {/* Sale Status */}
-      <td className={styles.td}>
+      <td className={styles.td} data-label="Sale">
         <button
           className={styles.salePill}
           style={{ background: pillStyle.bg, color: pillStyle.color }}
@@ -176,13 +181,13 @@ export default function LeadRow({ lead: initialLead }: LeadRowProps) {
       </td>
 
       {/* Notes */}
-      <td className={styles.td}>
+      <td className={`${styles.td} ${styles.notesColumn}`} data-label="Notes">
         <textarea
           className={styles.notesInput}
           defaultValue={lead.notes}
           onBlur={handleNotesBlur}
           placeholder="Add note..."
-          rows={1}
+          rows={2}
           id={`notes-${lead.id}`}
         />
       </td>

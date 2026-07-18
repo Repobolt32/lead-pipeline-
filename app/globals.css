@@ -31,3 +31,24 @@ button {
 input, select, textarea {
   font-family: 'Inter', sans-serif;
 }
+
+.layout-main {
+  margin-left: 220px;
+  flex: 1;
+  min-height: 100vh;
+  background: #F3F4F6;
+  padding: 32px;
+  transition: margin-left 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  html, body {
+    font-size: 15px;
+  }
+
+  .layout-main {
+    margin-left: 0;
+    padding: 16px;
+    padding-top: 56px;
+  }
+}

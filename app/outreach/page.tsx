@@ -19,6 +19,7 @@ interface Lead {
   sale_status: SaleStatus
   notes: string
   website: string
+  city?: string
 }
 
 const MOCK_LEADS: Lead[] = [
@@ -94,8 +95,21 @@ export default function OutreachPage() {
   useEffect(() => {
     async function loadCities() {
       if (isPlaceholder) {
-        setCities(['TestCity (Mock)'])
-        setSelectedCity('TestCity (Mock)')
+        const stored = localStorage.getItem('mock_leads')
+        let unique = ['TestCity (Mock)']
+        if (stored) {
+          try {
+            const list = JSON.parse(stored) as Lead[]
+            const storedCities = list
+              .map((r: Lead) => r.city || 'TestCity (Mock)')
+              .filter(Boolean)
+            unique = Array.from(new Set(['TestCity (Mock)', ...storedCities]))
+          } catch (e) {
+            console.error('Error parsing mock leads:', e)
+          }
+        }
+        setCities(unique)
+        setSelectedCity(unique[0])
         return
       }
       const { data } = await supabase
@@ -121,13 +135,23 @@ export default function OutreachPage() {
       const stored = localStorage.getItem('mock_leads')
       let list = MOCK_LEADS
       if (stored) {
-        list = JSON.parse(stored)
+        try {
+          list = JSON.parse(stored) as Lead[]
+        } catch (e) {
+          console.error('Error parsing mock leads:', e)
+        }
       } else {
         localStorage.setItem('mock_leads', JSON.stringify(MOCK_LEADS))
       }
       
+      // Filter list by selectedCity (fallback to 'TestCity (Mock)' if no city is set)
+      const filtered = list.filter((l: Lead) => {
+        const leadCity = l.city || 'TestCity (Mock)'
+        return leadCity === selectedCity
+      })
+
       // Sort: websites first
-      const sorted = [...list].sort((a, b) => {
+      const sorted = [...filtered].sort((a, b) => {
         const hasA = !!(a.website && a.website !== '—')
         const hasB = !!(b.website && b.website !== '—')
         if (hasA && !hasB) return -1

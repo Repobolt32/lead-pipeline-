@@ -19,7 +19,7 @@ export const APIFY_COLUMN_MAP: Record<string, string> = {
 
 // Row background colors by call_status value
 export const CALL_STATUS_COLORS: Record<string, string> = {
-  pending:    '#FEFCE8', // yellow  — not yet called
+  pending:    '#FFFFFF', // white   — not yet called
   called:     '#F0FDF4', // green   — call done
   call_later: '#FFF7ED', // orange  — follow up
   no_answer:  '#F3F4F6', // grey    — dead / no response

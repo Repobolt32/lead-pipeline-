@@ -333,3 +333,65 @@
   color: #991B1B;
   margin-bottom: 24px;
 }
+
+@media (max-width: 768px) {
+  .container {
+    max-width: 100%;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  .subtitle {
+    margin-bottom: 20px;
+  }
+
+  .card {
+    padding: 18px;
+  }
+
+  .keywordSection {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .keywordInput {
+    min-width: unset;
+  }
+
+  .statsGrid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+
+  .statsValue {
+    font-size: 20px;
+  }
+
+  .tableCard {
+    padding: 16px;
+  }
+
+  .tableHeaderRow {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .btnRow {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .btnPrimary,
+  .btnSecondary {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .fileArea {
+    padding: 24px 16px;
+  }
+}
+

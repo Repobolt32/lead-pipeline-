@@ -4,12 +4,14 @@
   left: 0;
   width: 220px;
   height: 100vh;
+  height: 100dvh;
   background: #111827;
   display: flex;
   flex-direction: column;
   padding: 0;
   z-index: 100;
   border-right: 1px solid #1F2937;
+  transition: transform 0.3s ease;
 }
 
 .logo {
@@ -49,6 +51,7 @@
   font-weight: 500;
   transition: background 0.15s, color 0.15s;
   text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .navLink:hover {
@@ -65,4 +68,94 @@
   font-size: 16px;
   width: 20px;
   text-align: center;
+}
+
+.hamburger {
+  display: none;
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 200;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 8px;
+  background: #111827;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 0;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+  transition: background 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.hamburger:hover {
+  background: #1F2937;
+}
+
+.hamburgerLine {
+  display: block;
+  width: 18px;
+  height: 2px;
+  background: #FFFFFF;
+  border-radius: 1px;
+}
+
+.overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 99;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%);
+    box-shadow: 2px 0 12px rgba(0,0,0,0.3);
+  }
+
+  .sidebarOpen {
+    transform: translateX(0);
+  }
+
+  .hamburger {
+    display: flex;
+  }
+
+  .overlay {
+    display: block;
+  }
+}
+
+.mockBanner {
+  margin: 16px;
+  padding: 10px 14px;
+  background: rgba(245, 158, 11, 0.15);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  color: #F59E0B;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+  cursor: help;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.mockBanner:hover {
+  background: rgba(245, 158, 11, 0.25);
+  border-color: rgba(245, 158, 11, 0.5);
 }

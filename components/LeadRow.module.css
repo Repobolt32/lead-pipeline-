@@ -106,43 +106,139 @@
 }
 
 .waBtn {
-  padding: 4px 10px;
-  background: #25D366;
-  color: #FFFFFF;
+  background: transparent;
   border: none;
-  border-radius: 6px;
-  font-size: 12px;
-  font-weight: 600;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  white-space: nowrap;
-  transition: background 0.15s;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+  border-radius: 50%;
 }
 
 .waBtn:hover {
-  background: #1ebe5d;
+  transform: scale(1.1);
+  opacity: 0.9;
+}
+
+.waIcon {
+  width: 26px;
+  height: 26px;
+  display: block;
+}
+
+.notesColumn {
+  width: 100%;
 }
 
 .notesInput {
   width: 100%;
-  min-width: 150px;
-  padding: 4px 8px;
+  min-width: 250px;
+  padding: 6px 8px;
   border: 1px solid transparent;
   border-radius: 6px;
   font-size: 12px;
-  color: #6B7280;
+  color: #374151;
   background: transparent;
   outline: none;
-  resize: none;
+  resize: vertical;
   font-family: 'Inter', sans-serif;
-  transition: border-color 0.15s;
+  transition: border-color 0.15s, background 0.15s;
 }
 
-.notesInput:focus {
-  border-color: #D1D5DB;
-  color: #111827;
+.notesInput:hover {
+  border-color: #E5E7EB;
   background: #F9FAFB;
 }
 
+.notesInput:focus {
+  border-color: #38BDF8;
+  color: #111827;
+  background: #FFFFFF;
+  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+}
+
 .notesInput::placeholder {
-  color: #D1D5DB;
+  color: #9CA3AF;
+}
+
+@media (max-width: 768px) {
+  .row {
+    display: block;
+    margin-bottom: 12px;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid #D1D5DB;
+    background: #FFFFFF;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+
+  .td {
+    display: flex;
+    align-items: center;
+    padding: 8px 14px;
+    border: none;
+    border-bottom: 1px solid #F3F4F6;
+    font-size: 13px;
+  }
+
+  .td:last-child {
+    border-bottom: none;
+  }
+
+  .td::before {
+    content: attr(data-label);
+    flex-shrink: 0;
+    width: 80px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #6B7280;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .name {
+    font-size: 15px;
+    font-weight: 600;
+    color: #111827;
+    min-width: unset;
+    max-width: unset;
+  }
+
+  .name::before {
+    display: none;
+  }
+
+  .phone {
+    white-space: normal;
+  }
+
+  .whatsappCell {
+    min-width: unset;
+    flex: 1;
+  }
+
+  .waInput {
+    flex: 1;
+    width: auto;
+    font-size: 13px;
+    padding: 6px 10px;
+  }
+
+  .notesColumn {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .notesColumn::before {
+    margin-bottom: 4px;
+  }
+
+  .notesInput {
+    min-width: unset;
+    font-size: 13px;
+    padding: 8px 10px;
+    border: 1px solid #E5E7EB;
+  }
 }

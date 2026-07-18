@@ -33,3 +33,20 @@
   color: #6B7280;
   padding: 0 8px;
 }
+
+@media (max-width: 768px) {
+  .pagination {
+    gap: 6px;
+    margin-top: 16px;
+  }
+
+  .btn {
+    padding: 8px 14px;
+    font-size: 13px;
+  }
+
+  .pageInfo {
+    font-size: 12px;
+    padding: 0 4px;
+  }
+}
