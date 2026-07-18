@@ -17,6 +17,14 @@ export const APIFY_COLUMN_MAP: Record<string, string> = {
   website: 'website',
 }
 
+// Row background colors by sale_status value
+export const SALE_ROW_COLORS: Record<string, string> = {
+  pending:    '#FFF9C4', // yellow — not yet contacted
+  free_trial: '#DBEAFE', // blue   — on trial
+  proceed:    '#D1FAE5', // green  — converting
+  rejected:   '#FEE2E2', // red    — dead lead
+}
+
 // Row background colors by call_status value
 export const CALL_STATUS_COLORS: Record<string, string> = {
   pending:    '#FFFFFF', // white   — not yet called

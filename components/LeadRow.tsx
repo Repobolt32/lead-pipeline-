@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { supabase, isPlaceholder } from '@/lib/supabase'
 import {
-  CALL_STATUS_COLORS,
+  SALE_ROW_COLORS,
   CALL_STATUS_OPTIONS,
   CALL_STATUS_BADGE,
   WHATSAPP_MESSAGE,
@@ -89,7 +89,7 @@ export default function LeadRow({ lead: initialLead }: LeadRowProps) {
     window.open(`https://wa.me/${number.replace(/\D/g, '')}?text=${text}`, '_blank')
   }
 
-  const rowBg = CALL_STATUS_COLORS[lead.call_status] ?? '#FFFFFF'
+  const rowBg = SALE_ROW_COLORS[lead.sale_status] ?? '#FFFFFF'
   const pillStyle = SALE_PILL_COLORS[lead.sale_status]
 
   return (

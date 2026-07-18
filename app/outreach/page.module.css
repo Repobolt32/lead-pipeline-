@@ -49,6 +49,63 @@
   border: 1px solid #E5E7EB;
 }
 
+.deadBtn {
+  padding: 6px 14px;
+  border: 1px solid #DC2626;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #FFFFFF;
+  background: #DC2626;
+  cursor: pointer;
+  transition: background 0.15s, opacity 0.15s;
+}
+
+.deadBtn:hover {
+  background: #B91C1C;
+}
+
+.deadBtn:active {
+  opacity: 0.9;
+}
+
+.filterTabs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.filterTab {
+  padding: 6px 16px;
+  border: 1px solid #D1D5DB;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #374151;
+  background: #FFFFFF;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  text-transform: capitalize;
+}
+
+.filterTab:hover {
+  background: #F3F4F6;
+  border-color: #111827;
+}
+
+.filterTabActive {
+  background: #111827;
+  color: #FFFFFF;
+  border-color: #111827;
+}
+
+.filterTabActive:hover {
+  opacity: 0.9;
+  background: #111827;
+}
+
 .tableCard {
   background: #FFFFFF;
   border-radius: 12px;
@@ -115,6 +172,15 @@
   .controls {
     width: 100%;
     flex-wrap: wrap;
+  }
+
+  .deadBtn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .filterTabs {
+    margin-bottom: 12px;
   }
 
   .citySelect {

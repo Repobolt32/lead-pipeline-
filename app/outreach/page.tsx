@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { supabase, isPlaceholder } from '@/lib/supabase'
 import LeadRow from '@/components/LeadRow'
 import Pagination from '@/components/Pagination'
-import { CallStatus, SaleStatus } from '@/lib/constants'
+import { CallStatus, SaleStatus, SALE_STATUS_OPTIONS, SALE_ROW_COLORS } from '@/lib/constants'
 import styles from './page.module.css'
 
 const PAGE_SIZE = 10
@@ -87,9 +87,14 @@ export default function OutreachPage() {
   const [totalCount, setTotalCount] = useState(0)
   const [page, setPage] = useState(1)
   const [loading, setLoading] = useState(false)
+  const [saleStatusFilter, setSaleStatusFilter] = useState<SaleStatus | 'all'>('all')
 
-  const totalPages = Math.max(1, Math.ceil(totalCount / PAGE_SIZE))
-  const pageLeads = allLeads.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
+  const filteredLeads = saleStatusFilter === 'all'
+    ? allLeads
+    : allLeads.filter((l) => l.sale_status === saleStatusFilter)
+
+  const totalPages = Math.max(1, Math.ceil(filteredLeads.length / PAGE_SIZE))
+  const pageLeads = filteredLeads.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
 
   // Load distinct cities once on mount
   useEffect(() => {
@@ -197,6 +202,36 @@ export default function OutreachPage() {
     return () => { cancelled = true }
   }, [selectedCity])
 
+  function handleFilterChange(status: SaleStatus | 'all') {
+    setSaleStatusFilter(status)
+    setPage(1)
+  }
+
+  const deadCount = allLeads.filter((l) => l.sale_status === 'rejected').length
+
+  async function handleRemoveDead() {
+    if (deadCount === 0) return
+    const ok = window.confirm(`Remove ${deadCount} rejected lead${deadCount > 1 ? 's' : ''}? This cannot be undone.`)
+    if (!ok) return
+
+    const rejectedIds = allLeads
+      .filter((l) => l.sale_status === 'rejected')
+      .map((l) => l.id)
+
+    if (isPlaceholder) {
+      const stored = localStorage.getItem('mock_leads')
+      if (stored) {
+        const list = JSON.parse(stored) as Lead[]
+        const remaining = list.filter((l) => !rejectedIds.includes(l.id))
+        localStorage.setItem('mock_leads', JSON.stringify(remaining))
+      }
+      setAllLeads((prev) => prev.filter((l) => l.sale_status !== 'rejected'))
+    } else {
+      await supabase.from('leads').delete().in('id', rejectedIds)
+      setAllLeads((prev) => prev.filter((l) => l.sale_status !== 'rejected'))
+    }
+  }
+
   // Reset to page 1 when city changes
   function handleCityChange(e: React.ChangeEvent<HTMLSelectElement>) {
     setSelectedCity(e.target.value)
@@ -222,7 +257,31 @@ export default function OutreachPage() {
           {totalCount > 0 && (
             <span className={styles.countBadge}>{totalCount} leads</span>
           )}
+          {deadCount > 0 && (
+            <button className={styles.deadBtn} onClick={handleRemoveDead}>
+              Remove Dead Lead ({deadCount})
+            </button>
+          )}
         </div>
+      </div>
+
+      <div className={styles.filterTabs}>
+        <button
+          className={`${styles.filterTab} ${saleStatusFilter === 'all' ? styles.filterTabActive : ''}`}
+          onClick={() => handleFilterChange('all')}
+        >
+          All
+        </button>
+        {SALE_STATUS_OPTIONS.map((s) => (
+          <button
+            key={s}
+            className={`${styles.filterTab} ${saleStatusFilter === s ? styles.filterTabActive : ''}`}
+            style={saleStatusFilter === s ? { background: SALE_ROW_COLORS[s], borderColor: SALE_ROW_COLORS[s] } : undefined}
+            onClick={() => handleFilterChange(s)}
+          >
+            {s.replace(/_/g, ' ')}
+          </button>
+        ))}
       </div>
 
       <div className={styles.tableCard}>
